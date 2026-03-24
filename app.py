@@ -24,14 +24,25 @@ def init_db():
 
 init_db()
 
+# --- TELA: MENU PRINCIPAL (DASHBOARD) ---
 @app.route("/")
-def index():
+def menu():
+    with get_db_connection() as conn:
+        resultado = conn.execute("SELECT COUNT(*) FROM users").fetchone()
+        total_users = resultado[0] if resultado else 0
+        
+    return render_template("menu.html", total_users=total_users)
+
+# --- TELA: CONSULTAR ---
+@app.route("/consultar")
+def consultar():
     with get_db_connection() as conn:
         users = conn.execute("SELECT * FROM users").fetchall()
-    return render_template("index.html", users=users)
+    return render_template("consultar.html", users=users)
 
-@app.route("/create", methods=("GET", "POST"))
-def create():
+# --- TELA: INSERIR ---
+@app.route("/inserir", methods=("GET", "POST"))
+def inserir():
     if request.method == "POST":
         nome = request.form["nome"].strip()
         email = request.form["email"].strip()
@@ -42,19 +53,26 @@ def create():
             with get_db_connection() as conn:
                 conn.execute("INSERT INTO users (nome, email) VALUES (?, ?)", (nome, email))
                 conn.commit()
-            flash("Usuário criado com sucesso!", "sucesso")
-            return redirect(url_for("index"))
+            flash("Usuário inserido com sucesso!", "sucesso")
+            return redirect(url_for("inserir"))
 
-    return render_template("create.html")
+    return render_template("inserir.html")
 
-@app.route("/edit/<int:id>", methods=("GET", "POST"))
-def edit(id):
+# --- TELAS: ATUALIZAR ---
+@app.route("/atualizar")
+def atualizar_lista():
+    with get_db_connection() as conn:
+        users = conn.execute("SELECT * FROM users").fetchall()
+    return render_template("atualizar_lista.html", users=users)
+
+@app.route("/atualizar/<int:id>", methods=("GET", "POST"))
+def atualizar_form(id):
     with get_db_connection() as conn:
         user = conn.execute("SELECT * FROM users WHERE id=?", (id,)).fetchone()
 
     if user is None:
         flash("Usuário não encontrado.", "erro")
-        return redirect(url_for("index"))
+        return redirect(url_for("atualizar_lista"))
 
     if request.method == "POST":
         nome = request.form["nome"].strip()
@@ -67,17 +85,24 @@ def edit(id):
                 conn.execute("UPDATE users SET nome=?, email=? WHERE id=?", (nome, email, id))
                 conn.commit()
             flash("Usuário atualizado com sucesso!", "sucesso")
-            return redirect(url_for("index"))
+            return redirect(url_for("atualizar_lista"))
 
-    return render_template("edit.html", user=user)
+    return render_template("atualizar_form.html", user=user)
 
-@app.route("/delete/<int:id>", methods=("POST",))
-def delete(id):
+# --- TELAS: EXCLUIR ---
+@app.route("/excluir")
+def excluir_lista():
+    with get_db_connection() as conn:
+        users = conn.execute("SELECT * FROM users").fetchall()
+    return render_template("excluir.html", users=users)
+
+@app.route("/excluir/<int:id>", methods=("POST",))
+def excluir_acao(id):
     with get_db_connection() as conn:
         conn.execute("DELETE FROM users WHERE id=?", (id,))
         conn.commit()
     flash("Usuário deletado com sucesso!", "sucesso")
-    return redirect(url_for("index"))
+    return redirect(url_for("excluir_lista"))
 
 if __name__ == "__main__":
     app.run(debug=True)
