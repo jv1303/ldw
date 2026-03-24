@@ -3,21 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}App de Usuários{% endblock %}</title>
-    
+    <title>{% block title %}Gestão de Usuários{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="flash {{ category }}">{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+    <div class="app-layout">
+        
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-users-gear" style="color: #6366f1;"></i> SistemaUser
+            </div>
+            
+            <nav class="sidebar-nav">
+                <p class="nav-title">MENU PRINCIPAL</p>
+                
+                <a href="{{ url_for('menu') }}" class="{% if request.path == '/' %}active{% endif %}">
+                    <i class="fa-solid fa-house"></i> Dashboard
+                </a>
+                
+                <a href="{{ url_for('consultar') }}" class="{% if request.path == '/consultar' %}active{% endif %}">
+                    <i class="fa-solid fa-table-list"></i> Consultar Dados
+                </a>
+                
+                <a href="{{ url_for('inserir') }}" class="{% if request.path == '/inserir' %}active{% endif %}">
+                    <i class="fa-solid fa-user-plus"></i> Inserir Usuário
+                </a>
+                
+                <a href="{{ url_for('atualizar_lista') }}" class="{% if 'atualizar' in request.path %}active{% endif %}">
+                    <i class="fa-solid fa-user-pen"></i> Atualizar Perfil
+                </a>
+                
+                <a href="{{ url_for('excluir_lista') }}" class="danger-link {% if 'excluir' in request.path %}active{% endif %}">
+                    <i class="fa-solid fa-user-xmark"></i> Excluir Registro
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">A</div>
+                    <div class="user-info-side">
+                        <span class="name">Administrador</span>
+                        <span class="role">Admin T.I.</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
 
-    {% block content %}{% endblock %}
+        <main class="main-content">
+            <div class="content-wrapper">
+                
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    {% for category, message in messages %}
+                      <div class="flash {{ category }}">
+                        <i class="fa-solid {% if category == 'sucesso' %}fa-check-circle{% else %}fa-circle-exclamation{% endif %}"></i>
+                        {{ message }}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+
+                {% block content %}{% endblock %}
+                
+            </div>
+        </main>
+        
+    </div>
 
 </body>
 </html>

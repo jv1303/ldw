@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Consultar Usuários{% endblock %}
+{% block content %}
+    
+    <div class="page-header">
+        <h1>Consultar Usuários</h1>
+        <a href="{{ url_for('menu') }}" class="btn btn-outline">
+            <i class="fa-solid fa-arrow-left"></i> Voltar ao Menu
+        </a>
+    </div>
+
+    <ul class="user-list">
+    {% for user in users %}
+        <li>
+            <span class="user-info"><strong>ID {{ user.id }}:</strong> {{ user.nome }} - {{ user.email }}</span>
+        </li>
+    {% else %}
+        <li>Nenhum usuário encontrado no sistema.</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Painel de Controle{% endblock %}
+
+{% block content %}
+    <div class="dashboard-hero">
+        <div class="hero-text">
+            <h1>Olá, Administrador! 👋</h1>
+            <p>Bem-vindo ao seu painel de gestão. Aqui está o resumo do sistema hoje:</p>
+        </div>
+        <div class="hero-stats">
+            <div class="stat-card">
+                <span class="stat-number">{{ total_users }}</span>
+                <span class="stat-label">Usuários Cadastrados</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-header">
+        <h2>Módulos do Sistema</h2>
+        <p>Selecione abaixo a operação que deseja realizar</p>
+    </div>
+
+    <div class="menu-grid">
+        <a href="{{ url_for('consultar') }}" class="menu-card">
+            <div class="icon-wrapper"><i class="fa-solid fa-table-list"></i></div>
+            <div class="card-content">
+                <h3>Consultar Dados</h3>
+                <p>Visualize a tabela completa com todos os usuários cadastrados e seus detalhes.</p>
+            </div>
+        </a>
+        
+        <a href="{{ url_for('inserir') }}" class="menu-card">
+            <div class="icon-wrapper"><i class="fa-solid fa-user-plus"></i></div>
+            <div class="card-content">
+                <h3>Inserir Novo</h3>
+                <p>Abra o formulário para adicionar novos membros ao banco de dados.</p>
+            </div>
+        </a>
+
+        <a href="{{ url_for('atualizar_lista') }}" class="menu-card">
+            <div class="icon-wrapper"><i class="fa-solid fa-user-pen"></i></div>
+            <div class="card-content">
+                <h3>Atualizar Perfil</h3>
+                <p>Corrija erros de digitação ou atualize informações de contato dos usuários.</p>
+            </div>
+        </a>
+
+        <a href="{{ url_for('excluir_lista') }}" class="menu-card danger-card">
+            <div class="icon-wrapper danger-icon"><i class="fa-solid fa-user-xmark"></i></div>
+            <div class="card-content">
+                <h3>Excluir Registro</h3>
+                <p>Remova permanentemente contas de usuários do sistema (Ação irreversível).</p>
+            </div>
+        </a>
+    </div>
+{% endblock %}
