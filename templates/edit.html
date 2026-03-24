@@ -1,22 +1,28 @@
 {% extends "base.html" %}
-
-{% block title %}Editar Usuário{% endblock %}
-
+{% block title %}Editando Usuário{% endblock %}
 {% block content %}
-    <h1>Editar Usuário</h1>
+    
+    <div class="page-header">
+        <h1>Editando: {{ user.nome }}</h1>
+        <a href="{{ url_for('atualizar_lista') }}" class="btn btn-outline">
+            <i class="fa-solid fa-arrow-left"></i> Voltar para a Lista
+        </a>
+    </div>
 
-    <form method="POST">
-        <div class="form-group">
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" value="{{ user.nome }}" required>
-        </div>
-
-        <div class="form-group">
-            <label for="email">E-mail:</label>
-            <input type="email" id="email" name="email" value="{{ user.email }}" required>
-        </div>
-
-        <button type="submit" class="btn">Atualizar Usuário</button>
-        <a href="{{ url_for('index') }}" class="btn btn-danger" style="margin-left: 10px;">Cancelar</a>
-    </form>
+    <div class="form-card">
+        <form method="POST">
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" value="{{ user.nome }}" required>
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" value="{{ user.email }}" required>
+            </div>
+            
+            <div style="margin-top: 30px;">
+                <button type="submit" class="btn btn-warning"><i class="fa-solid fa-arrows-rotate"></i> Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
 {% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Excluir Usuários{% endblock %}
+{% block content %}
+    
+    <div class="page-header">
+        <div>
+            <h1 style="color: var(--danger);"><i class="fa-solid fa-triangle-exclamation"></i> Excluir Usuários</h1>
+            <p style="margin: 5px 0 0 0; color: var(--text-muted);">Atenção: Esta ação não pode ser desfeita.</p>
+        </div>
+        <a href="{{ url_for('menu') }}" class="btn btn-outline">
+            <i class="fa-solid fa-arrow-left"></i> Voltar ao Menu
+        </a>
+    </div>
+
+    <ul class="user-list">
+    {% for user in users %}
+        <li>
+            <span class="user-info"><strong>{{ user.nome }}</strong> - {{ user.email }}</span>
+            <form action="{{ url_for('excluir_acao', id=user.id) }}" method="POST" onsubmit="return confirm('Tem certeza absoluta que deseja deletar {{ user.nome }}?');">
+                <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Deletar</button>
+            </form>
+        </li>
+    {% else %}
+        <li>Nenhum usuário cadastrado para excluir.</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

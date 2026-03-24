@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Atualizar Usuários{% endblock %}
+{% block content %}
+    
+    <div class="page-header">
+        <h1>Selecione quem deseja atualizar</h1>
+        <a href="{{ url_for('menu') }}" class="btn btn-outline">
+            <i class="fa-solid fa-arrow-left"></i> Voltar ao Menu
+        </a>
+    </div>
+
+    <ul class="user-list">
+    {% for user in users %}
+        <li>
+            <span class="user-info"><strong>{{ user.nome }}</strong> - {{ user.email }}</span>
+            <a href="{{ url_for('atualizar_form', id=user.id) }}" class="btn btn-warning"><i class="fa-solid fa-pen"></i> Editar</a>
+        </li>
+    {% else %}
+        <li>Nenhum usuário cadastrado para atualizar.</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
